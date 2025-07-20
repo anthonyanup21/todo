@@ -3,18 +3,41 @@ import { MdDelete } from "react-icons/md";
 import { IoSend } from "react-icons/io5";
 
 const App = () => {
-  const [formdata, setformdata] = useState("");
+
 
   const [todos, settodos] = useState([]);
+  const [formdata, setformdata] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
-    setformdata(formdata);
-    console.log(formdata);
-    settodos([...todos, formdata]);
+
+    if (formdata.trim().length==0) return
+
+    const newtodo={
+      id:Date.now(),
+      data:formdata,
+      complete:false
+    }
+    settodos([...todos, newtodo]);
     setformdata("");
-    console.log(todos);
   };
+
+
+
+  const delete_todo=(id)=>{
+    const filtred_todos=todos.filter((data)=>data.id!=id)
+    settodos(filtred_todos)
+
+  }
+
+
+  const togglecheckbox=(id)=>{
+    const update=todos.map((todo)=>todo.id==id?{...todo,complete:!todo.complete}:todo)
+    settodos(update)
+
+
+
+  }
   return (
     <div>
       <div className="flex justify-center text-9xl font-bold opacity-30 mt-30">
@@ -23,7 +46,7 @@ const App = () => {
 
       <div className="flex justify-center mt-20 ">
         <form onSubmit={submit}>
-          <div className="relative">
+          <div className="relative" >
             <input
               type="text"
               value={formdata}
@@ -44,20 +67,26 @@ const App = () => {
       <div className="flex justify-center mt-10 overflow-auto h-[450px]">
         <div>
           {todos.map((data) => (
-            <div className="relative">
+            <div className="relative" >
               <input
                 type="text"
-                className=" w-[780px] h-[60px]  text-3xl px-10 "
-                value={data}
+                className={`w-[780px] h-[60px]  text-3xl px-10  ${data.complete ? "text-decoration-line: line-through":""}`}
+                value={data.data}
                 disabled
               />
-              <MdDelete
+              <button onClick={()=>{delete_todo(data.id)}}>
+                 <MdDelete
                 size={37}
                 className="absolute top-0 left-189 mt-2 hover:opacity-50"
+                
               />
+                
+              </button>
+             
               <input
                 type="checkbox"
                 className=" absolute top-0 left-0 w-5 h-5 mt-5 "
+                onClick={()=>togglecheckbox(data.id)}
               />
             </div>
           ))}
