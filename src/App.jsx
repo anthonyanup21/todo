@@ -5,27 +5,28 @@ import { IoSend } from "react-icons/io5";
 const App = () => {
 
 
-  const [todos, settodos] = useState([]);
-  const [formdata, setformdata] = useState("");
+  const [todos, settodos] = useState([]);//list of all todos
+  const [formdata, setformdata] = useState("");//single todo
 
   const submit = (e) => {
     e.preventDefault();
 
-    if (formdata.trim().length==0) return
+    if (formdata.trim().length==0) return //return if teh todo is empty
 
     const newtodo={
-      id:Date.now(),
-      data:formdata,
-      complete:false
+      id:Date.now(),//unique id to a todo
+      data:formdata,//todo
+      complete:false//is todo completed
     }
-    settodos([...todos, newtodo]);
-    setformdata("");
+    settodos([...todos, newtodo]);//add new todo to todos list
+    setformdata("");//clear the form data
   };
 
 
 
   const delete_todo=(id)=>{
-    const filtred_todos=todos.filter((data)=>data.id!=id)
+    const filtred_todos=todos.filter((data)=>data.id!=id) //aflter the todo by id
+
     settodos(filtred_todos)
 
   }
